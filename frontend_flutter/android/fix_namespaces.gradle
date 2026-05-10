@@ -1,0 +1,19 @@
+subprojects {
+    afterEvaluate { project ->
+        if (project.hasProperty('android')) {
+            project.android {
+                if (namespace == null) {
+                    def manifest = project.file('src/main/AndroidManifest.xml')
+                    if (manifest.exists()) {
+                        try {
+                            def parsed = new XmlParser(false, false).parse(manifest)
+                            namespace = parsed.'@package'
+                        } catch (Exception e) {
+                            println "Could not parse manifest for ${project.name}"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

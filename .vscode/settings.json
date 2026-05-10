@@ -1,0 +1,8 @@
+{
+    "java.import.exclusions": [
+        "**/flutter_tools/gradle/**",
+        "**/.flutter/**",
+        "**/.pub-cache/**",
+        "**/AppData/Local/Pub/Cache/**"
+    ]
+}

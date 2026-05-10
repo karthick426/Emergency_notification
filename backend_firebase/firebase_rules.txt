@@ -1,0 +1,81 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function getUserRole() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+    }
+
+    function isPatient() {
+      return isSignedIn() && getUserRole() == 'patient';
+    }
+
+    function isHospitalAdmin() {
+      return isSignedIn() && getUserRole() == 'hospital';
+    }
+
+    function isAdmin() {
+      return isSignedIn() && getUserRole() == 'admin';
+    }
+
+    function hospitalOwnerMatches(hospitalId) {
+      return isSignedIn() &&
+        get(/databases/$(database)/documents/hospitals/$(hospitalId)).data.ownerUserId == request.auth.uid;
+    }
+
+    // USERS
+    match /users/{userId} {
+      allow read, write: if isSignedIn() && request.auth.uid == userId;
+    }
+
+    // HOSPITALS (readable by signed-in users, writable by owning hospital admins)
+    match /hospitals/{hospitalId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn();
+      allow update: if isHospitalAdmin() && hospitalOwnerMatches(hospitalId);
+      allow delete: if false;
+    }
+
+    // AMBULANCES (readable by signed-in users, writable by admin/hospital)
+    match /ambulances/{ambulanceId} {
+      allow read: if isSignedIn();
+      allow create, update: if isHospitalAdmin() || isAdmin();
+      allow delete: if false;
+    }
+
+    // EMERGENCY REQUESTS
+    match /requests/{requestId} {
+      // Patients can create a request for themselves.
+      allow create: if isSignedIn()
+        && request.auth.uid == request.resource.data.userId
+        && request.resource.data.status is string;
+
+      // Patients can read their own requests.
+      // Hospital admins can read requests for hospitals they own.
+      // Admin can read all.
+      allow read: if isSignedIn()
+        && (
+          resource.data.userId == request.auth.uid
+          || hospitalOwnerMatches(resource.data.hospitalId)
+          || isAdmin()
+        );
+
+      // Updates are allowed for:
+      // - request owner (patient) if they want to mark/cancel (not implemented in UI)
+      // - hospital admin for the hospital that owns the request
+      // - admin for all requests (e.g., status correction)
+      allow update: if isSignedIn()
+        && (
+          resource.data.userId == request.auth.uid
+          || hospitalOwnerMatches(resource.data.hospitalId)
+          || isAdmin()
+        );
+
+      allow delete: if false;
+    }
+  }
+}
+

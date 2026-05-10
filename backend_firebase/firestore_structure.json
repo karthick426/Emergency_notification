@@ -1,0 +1,50 @@
+{
+  "users": {
+    "{userId}": {
+      "name": "string",
+      "phone": "string",
+      "role": "string (patient|hospital|admin)",
+      "fcmToken": "string (optional, for push notifications)",
+      "createdAt": "timestamp"
+    }
+  },
+  "hospitals": {
+    "{hospitalId}": {
+      "name": "string",
+      "location": {
+        "latitude": "number",
+        "longitude": "number"
+      },
+      "totalBeds": "number",
+      "availableBeds": "number",
+      "icuBeds": "number",
+      "ownerUserId": "string (hospital admin user id)"
+    }
+  },
+  "ambulances": {
+    "{ambulanceId}": {
+      "driverName": "string",
+      "location": {
+        "latitude": "number",
+        "longitude": "number"
+      },
+      "status": "string (available|assigned|offline)",
+      "assignedRequestId": "string (optional)"
+    }
+  },
+  "requests": {
+    "{requestId}": {
+      "userId": "string (requester uid)",
+      "hospitalId": "string (assigned hospital id)",
+      "ambulanceId": "string (optional, assigned later)",
+      "status": "string (pending|accepted|completed)",
+      "timestamp": "timestamp (server)",
+      "userLocation": {
+        "latitude": "number",
+        "longitude": "number"
+      },
+      "message": "string (optional voice transcription / note)"
+    }
+  }
+}
+

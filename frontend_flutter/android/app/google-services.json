@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "726128096469",
+    "project_id": "smart-city-emergency-dba58",
+    "storage_bucket": "smart-city-emergency-dba58.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:726128096469:android:be53f3a47172af714b9e5c",
+        "android_client_info": {
+          "package_name": "com.example.smart_city_emergency_system"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "726128096469-8g4ob5388uqbd3galgl62bol8u0ujf14.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxIb5vOhB_ZXnoxaoMj1L5rHZNj0-hNl0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "726128096469-8g4ob5388uqbd3galgl62bol8u0ujf14.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "726128096469-tlob20uc3r0iol70lqfae827mtr7egll.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.smartCityEmergencySystem"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
