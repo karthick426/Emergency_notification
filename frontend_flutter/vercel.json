@@ -1,0 +1,5 @@
+{
+  "buildCommand": "bash vercel.sh",
+  "outputDirectory": "build/web",
+  "installCommand": "echo 'Installation handled in buildCommand'"
+}
